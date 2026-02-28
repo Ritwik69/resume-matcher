@@ -265,7 +265,7 @@ export async function POST(req: NextRequest) {
   }
 
   // ── 8. Persist analysis ────────────────────────────────────────────────────
-  const { error: insertError } = await supabase.from("analyses").insert({
+  const { error: insertError } = await (supabase.from("analyses").insert({
     user_id: user.id,
     resume_text: resumeText,
     jd_text: jdText,
@@ -273,7 +273,7 @@ export async function POST(req: NextRequest) {
     matched_skills: claudeResult.matched_skills,
     missing_skills: claudeResult.missing_skills,
     summary: claudeResult.summary,
-  });
+  }) as unknown as Promise<{ error: { message: string } | null }>);
 
   if (insertError) {
     console.error("[analyze] Failed to save analysis:", insertError.message);

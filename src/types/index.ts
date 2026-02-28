@@ -22,10 +22,13 @@ export type Database = {
         Relationships: [];
       };
     };
-    // Required stubs — @supabase/supabase-js GenericSchema needs Views + Functions
-    Views: Record<string, never>;
-    Functions: Record<string, never>;
-    Enums: Record<string, never>;
+    // Required stubs — match the exact shape supabase gen types produces for empty schemas.
+    // { [_ in never]: never } (empty mapped type) avoids the string index signature that
+    // Record<string, never> adds, which was causing Supabase's internal type resolution
+    // to cascade to `never` for all table Insert/Row lookups.
+    Views: { [_ in never]: never };
+    Functions: { [_ in never]: never };
+    Enums: { [_ in never]: never };
   };
 };
 

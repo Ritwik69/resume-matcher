@@ -13,7 +13,10 @@
       "Bash(npm install @supabase/ssr@latest 2>&1 | tail -5)",
       "Bash(node -e \"console.log\\(require\\('/Users/ritwikranjan/resume-matcher/node_modules/@supabase/ssr/package.json'\\).version\\)\")",
       "Bash(find /Users/ritwikranjan/resume-matcher/src -type f 2>/dev/null && echo \"---\" && find /Users/ritwikranjan/resume-matcher -maxdepth 2 -type f -name \"*.ts\" -o -name \"*.tsx\" 2>/dev/null | grep -v node_modules)",
-      "Bash(git -C /Users/ritwikranjan/resume-matcher add .)"
+      "Bash(git -C /Users/ritwikranjan/resume-matcher add .)",
+      "Bash(git -C /Users/ritwikranjan/resume-matcher commit -m \"fix typescript error\")",
+      "Bash(git -C /Users/ritwikranjan/resume-matcher push)",
+      "Bash(git add . && git commit -m \"fix supabase type errors\" && git push)"
     ]
   }
 }
