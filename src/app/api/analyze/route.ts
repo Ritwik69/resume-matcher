@@ -23,7 +23,7 @@ import { anthropic, CLAUDE_MODEL } from "@/lib/anthropic";
 import { buildResumePdf } from "@/lib/buildResumePdf";
 import { sendResumeEmail } from "@/lib/resend";
 import { clamp, normalizeText } from "@/lib/utils";
-import type { ClaudeAnalysis, AnalyzeResult } from "@/types";
+import type { ClaudeAnalysis, AnalyzeResult, Profile } from "@/types";
 
 // pdf-parse requires the Node.js runtime (not Edge)
 export const runtime = "nodejs";
@@ -200,7 +200,7 @@ export async function POST(req: NextRequest) {
     .from("profiles")
     .select("daily_count, last_reset")
     .eq("id", user.id)
-    .maybeSingle();
+    .maybeSingle() as unknown as { data: Pick<Profile, "daily_count" | "last_reset"> | null };
 
   const isNewDay = !profile || profile.last_reset !== today;
   const currentCount = isNewDay ? 0 : (profile.daily_count ?? 0);
