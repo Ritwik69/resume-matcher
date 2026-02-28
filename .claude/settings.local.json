@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install)",
+      "Bash(npm show next versions --json 2>/dev/null | node -e \"const v=require\\('fs'\\).readFileSync\\('/dev/stdin','utf8'\\); const all=JSON.parse\\(v\\); console.log\\(all.filter\\(x=>/^14\\\\.\\\\d+\\\\.\\\\d+$/.test\\(x\\)\\).slice\\(-10\\).join\\('\\\\n'\\)\\)\")",
+      "Bash(npm audit 2>&1 | head -60)",
+      "Bash(npm audit fix 2>&1)",
+      "Bash(npm install resend pdf-lib 2>&1 | tail -5)",
+      "Bash(npx tsc --noEmit 2>&1)",
+      "Bash(grep -r \"GenericSchema\" /Users/ritwikranjan/resume-matcher/node_modules/@supabase/ssr/dist/module/*.d.ts 2>/dev/null)",
+      "Bash(node -e \"console.log\\(require\\('/Users/ritwikranjan/resume-matcher/node_modules/@supabase/supabase-js/package.json'\\).version\\)\" && node -e \"console.log\\(require\\('/Users/ritwikranjan/resume-matcher/node_modules/@supabase/ssr/package.json'\\).peerDependencies\\)\")",
+      "Bash(cat /Users/ritwikranjan/resume-matcher/node_modules/@supabase/supabase-js/package.json | python3 -c \"import sys,json; p=json.load\\(sys.stdin\\); print\\(p.get\\('exports', {}\\).get\\('./dist/module/lib/types', 'NOT FOUND'\\)[:200]\\)\" 2>/dev/null)",
+      "Bash(npm install @supabase/ssr@latest 2>&1 | tail -5)",
+      "Bash(node -e \"console.log\\(require\\('/Users/ritwikranjan/resume-matcher/node_modules/@supabase/ssr/package.json'\\).version\\)\")",
+      "Bash(find /Users/ritwikranjan/resume-matcher/src -type f 2>/dev/null && echo \"---\" && find /Users/ritwikranjan/resume-matcher -maxdepth 2 -type f -name \"*.ts\" -o -name \"*.tsx\" 2>/dev/null | grep -v node_modules)"
+    ]
+  }
+}
