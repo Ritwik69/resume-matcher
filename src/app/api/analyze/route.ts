@@ -196,6 +196,7 @@ export async function POST(req: NextRequest) {
   // ── 3. Rate limit — read profile, enforce 5/day ────────────────────────────
   const today = new Date().toISOString().slice(0, 10); // "YYYY-MM-DD"
 
+  // @ts-ignore
   const { data: profile } = await supabase
     .from("profiles")
     .select("daily_count, last_reset")
@@ -265,6 +266,7 @@ export async function POST(req: NextRequest) {
   }
 
   // ── 8. Persist analysis ────────────────────────────────────────────────────
+  // @ts-ignore
   const { error: insertError } = await (supabase.from("analyses").insert({
     user_id: user.id,
     resume_text: resumeText,
@@ -280,6 +282,7 @@ export async function POST(req: NextRequest) {
   }
 
   // ── 9. Update daily counter ────────────────────────────────────────────────
+  // @ts-ignore
   await supabase.from("profiles").upsert(
     {
       id: user.id,
