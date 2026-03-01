@@ -4,31 +4,75 @@
 
 // ---------------------------------------------------------------------------
 // Supabase Database schema
+// Inlined column definitions (not references to interfaces) so Supabase's
+// internal conditional types resolve correctly instead of collapsing to never.
 // ---------------------------------------------------------------------------
 
 export type Database = {
   public: {
     Tables: {
       analyses: {
-        Row: Analysis;
-        Insert: Omit<Analysis, "id" | "created_at">;
-        Update: Partial<Omit<Analysis, "id">>;
+        Row: {
+          id: string;
+          user_id: string;
+          resume_text: string;
+          jd_text: string;
+          score: number;
+          matched_skills: string[];
+          missing_skills: string[];
+          summary: string;
+          inserted_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          resume_text: string;
+          jd_text: string;
+          score: number;
+          matched_skills: string[];
+          missing_skills: string[];
+          summary: string;
+          inserted_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          resume_text?: string;
+          jd_text?: string;
+          score?: number;
+          matched_skills?: string[];
+          missing_skills?: string[];
+          summary?: string;
+          inserted_at?: string;
+        };
         Relationships: [];
       };
       profiles: {
-        Row: Profile;
-        Insert: Omit<Profile, "id">;
-        Update: Partial<Omit<Profile, "id">>;
+        Row: {
+          id: string;
+          email: string;
+          daily_count: number;
+          last_reset: string;
+        };
+        Insert: {
+          id?: string;
+          email: string;
+          daily_count?: number;
+          last_reset?: string;
+        };
+        Update: {
+          id?: string;
+          email?: string;
+          daily_count?: number;
+          last_reset?: string;
+        };
         Relationships: [];
       };
     };
-    // Required stubs — match the exact shape supabase gen types produces for empty schemas.
-    // { [_ in never]: never } (empty mapped type) avoids the string index signature that
-    // Record<string, never> adds, which was causing Supabase's internal type resolution
-    // to cascade to `never` for all table Insert/Row lookups.
     Views: { [_ in never]: never };
     Functions: { [_ in never]: never };
     Enums: { [_ in never]: never };
+    CompositeTypes: { [_ in never]: never };
   };
 };
 
@@ -46,7 +90,7 @@ export interface Analysis {
   matched_skills: string[];
   missing_skills: string[];
   summary: string;
-  created_at: string;
+  inserted_at: string;
 }
 
 export interface Profile {

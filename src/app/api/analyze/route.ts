@@ -23,7 +23,7 @@ import { anthropic, CLAUDE_MODEL } from "@/lib/anthropic";
 import { buildResumePdf } from "@/lib/buildResumePdf";
 import { sendResumeEmail } from "@/lib/resend";
 import { clamp, normalizeText } from "@/lib/utils";
-import type { ClaudeAnalysis, AnalyzeResult, Profile } from "@/types";
+import type { ClaudeAnalysis, AnalyzeResult } from "@/types";
 
 // pdf-parse requires the Node.js runtime (not Edge)
 export const runtime = "nodejs";
@@ -196,12 +196,11 @@ export async function POST(req: NextRequest) {
   // ── 3. Rate limit — read profile, enforce 5/day ────────────────────────────
   const today = new Date().toISOString().slice(0, 10); // "YYYY-MM-DD"
 
-  // @ts-ignore
   const { data: profile } = await supabase
     .from("profiles")
     .select("daily_count, last_reset")
     .eq("id", user.id)
-    .maybeSingle() as unknown as { data: Pick<Profile, "daily_count" | "last_reset"> | null };
+    .maybeSingle();
 
   const isNewDay = !profile || profile.last_reset !== today;
   const currentCount = isNewDay ? 0 : (profile.daily_count ?? 0);
@@ -266,8 +265,7 @@ export async function POST(req: NextRequest) {
   }
 
   // ── 8. Persist analysis ────────────────────────────────────────────────────
-  // @ts-ignore
-  const { error: insertError } = await (supabase.from("analyses").insert({
+  const { error: insertError } = await supabase.from("analyses").insert({
     user_id: user.id,
     resume_text: resumeText,
     jd_text: jdText,
@@ -275,14 +273,13 @@ export async function POST(req: NextRequest) {
     matched_skills: claudeResult.matched_skills,
     missing_skills: claudeResult.missing_skills,
     summary: claudeResult.summary,
-  }) as unknown as Promise<{ error: { message: string } | null }>);
+  });
 
   if (insertError) {
     console.error("[analyze] Failed to save analysis:", insertError.message);
   }
 
   // ── 9. Update daily counter ────────────────────────────────────────────────
-  // @ts-ignore
   await supabase.from("profiles").upsert(
     {
       id: user.id,

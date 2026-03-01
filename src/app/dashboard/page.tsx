@@ -77,9 +77,9 @@ export default async function DashboardPage() {
   const [{ data: analyses }, { data: profile }] = await Promise.all([
     supabase
       .from("analyses")
-      .select("id, score, matched_skills, missing_skills, summary, jd_text, created_at")
+      .select("id, score, matched_skills, missing_skills, summary, jd_text, inserted_at")
       .eq("user_id", user.id)
-      .order("created_at", { ascending: false }),
+      .order("inserted_at", { ascending: false }),
     supabase.from("profiles").select("daily_count, last_reset").eq("id", user.id).maybeSingle(),
   ]);
 
@@ -254,7 +254,7 @@ export default async function DashboardPage() {
                           </div>
                         </div>
                         <span className="shrink-0 text-xs text-gray-600">
-                          {formatDate(analysis.created_at)}
+                          {formatDate(analysis.inserted_at)}
                         </span>
                       </div>
 
