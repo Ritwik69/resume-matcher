@@ -111,8 +111,6 @@ export interface AnalyzeResult {
   matchedSkills: string[];
   missingSkills: string[];
   summary: string;
-  /** True if the tailored resume PDF was successfully emailed to the user. */
-  emailSent: boolean;
   /** Base64-encoded tailored resume PDF for direct browser download. */
   resumePdfBase64?: string;
 }

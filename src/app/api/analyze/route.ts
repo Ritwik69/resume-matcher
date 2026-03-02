@@ -10,18 +10,16 @@
 //  5. Two parallel Claude calls:
 //       a. Analysis  → score, matched_skills, missing_skills, summary
 //       b. Rewrite   → tailored resume text (structured with [SECTION] markers)
-//  6. Build a PDF from the tailored resume text (pdf-lib)
-//  7. Email the PDF to the user (Resend) — non-fatal
-//  8. Persist analysis to DB — non-fatal
-//  9. Update daily counter
-// 10. Return the analysis result
+//  6. Build a PDF from the tailored resume text (pdf-lib) — base64 returned to client
+//  7. Persist analysis to DB — non-fatal
+//  8. Update daily counter
+//  9. Return the analysis result
 
 import { NextRequest, NextResponse } from "next/server";
 import pdfParse from "pdf-parse";
 import { createServerClient } from "@/lib/supabase/server";
 import { anthropic, CLAUDE_MODEL } from "@/lib/anthropic";
 import { buildResumePdf } from "@/lib/buildResumePdf";
-import { sendResumeEmail } from "@/lib/resend";
 import { clamp, normalizeText } from "@/lib/utils";
 import type { ClaudeAnalysis, AnalyzeResult } from "@/types";
 
@@ -254,7 +252,7 @@ export async function POST(req: NextRequest) {
   }
 
   // ── 6. Build PDF ────────────────────────────────────────────────────────────
-  // Always attempt — bytes are returned to the client for direct download.
+  // Bytes are base64-encoded and returned to the client for direct download.
   let pdfBytes: Uint8Array | null = null;
   try {
     pdfBytes = await buildResumePdf(tailoredResumeText);
@@ -262,18 +260,7 @@ export async function POST(req: NextRequest) {
     console.error("[analyze] PDF build failed:", err);
   }
 
-  // ── 7. Send email (non-fatal) ───────────────────────────────────────────────
-  let emailSent = false;
-  if (pdfBytes) {
-    try {
-      await sendResumeEmail(user.email!, pdfBytes, claudeResult.score, claudeResult.summary);
-      emailSent = true;
-    } catch (err) {
-      console.error("[analyze] Email step failed:", err);
-    }
-  }
-
-  // ── 8. Persist analysis ────────────────────────────────────────────────────
+  // ── 7. Persist analysis ────────────────────────────────────────────────────
   const { error: insertError } = await supabase.from("analyses").insert({
     user_id: user.id,
     resume_text: resumeText,
@@ -288,7 +275,7 @@ export async function POST(req: NextRequest) {
     console.error("[analyze] Failed to save analysis:", insertError.message);
   }
 
-  // ── 9. Update daily counter ────────────────────────────────────────────────
+  // ── 8. Update daily counter ────────────────────────────────────────────────
   await supabase.from("profiles").upsert(
     {
       id: user.id,
@@ -299,13 +286,12 @@ export async function POST(req: NextRequest) {
     { onConflict: "id" },
   );
 
-  // ── 10. Return result ──────────────────────────────────────────────────────
+  // ── 9. Return result ───────────────────────────────────────────────────────
   const result: AnalyzeResult = {
     score: claudeResult.score,
     matchedSkills: claudeResult.matched_skills,
     missingSkills: claudeResult.missing_skills,
     summary: claudeResult.summary,
-    emailSent,
     resumePdfBase64: pdfBytes ? Buffer.from(pdfBytes).toString("base64") : undefined,
   };
 

@@ -306,19 +306,6 @@ export default function AnalyzeForm() {
           {/* Divider */}
           <div className="h-px bg-gradient-to-r from-transparent via-gray-700/60 to-transparent" />
 
-          {/* Email confirmation banner */}
-          {result.emailSent && (
-            <div className="flex items-center gap-3 rounded-xl bg-violet-500/8 border border-violet-500/20 px-4 py-3">
-              <svg className="w-4 h-4 text-violet-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                  d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-              </svg>
-              <p className="text-sm text-violet-300">
-                Your tailored resume PDF has been emailed to you — check your inbox.
-              </p>
-            </div>
-          )}
-
           {/* Download button */}
           {result.resumePdfBase64 && (
             <button
