@@ -86,13 +86,16 @@ Rules:
 /** Call Claude to rewrite and tailor the resume content for the given JD. */
 async function runRewrite(resumeText: string, jdText: string, pages: 1 | 2): Promise<string> {
   const lengthGuidance = pages === 1
-    ? `TARGET LENGTH: exactly 1 page — achieved by COMPRESSION ONLY, never by removal.
-- Include EVERY position, project, skill, and achievement from the original resume — do not drop any role or item.
-- Compress each bullet aggressively: cut filler words, use telegraphic phrasing, keep every bullet under 12 words.
-- Limit each position to 2 bullets max, but rewrite them to pack ALL accomplishments from that role into those 2 bullets.
-- Summary: 2 tight sentences; no filler phrases.
-- Skills: consolidate into fewer category lines but list every skill from the original — abbreviate where safe (e.g. "JS" for "JavaScript").
-- If content still feels long, shorten words and remove articles/prepositions before ever considering removing an item.`
+  ? `TARGET LENGTH: exactly 1 page — achieved by COMPRESSION ONLY, never by removal.
+STRICT RULES:
+- Rephrase the resume based on the job description using relevant keywords and Include EVERY single bullet point, position, project, skill and achievement from the original resume. Do not drop a single item.
+- Keep the same number of bullets per role as the original resume.
+- Compress each bullet to fit: remove filler words, articles, prepositions. Use telegraphic style. Max 12 words per bullet.
+- Reorder bullets within each role so JD-relevant ones come first — but keep all of them.
+- Summary: 2 tight sentences covering all key strengths. No filler.
+- Skills: keep every skill. Abbreviate safely where possible. Consolidate into fewer lines but list all.
+- If still long: shorten job titles, compress dates (e.g. "2024-Present"), tighten section headers.
+- NEVER drop content. Compression only.`
     : `TARGET LENGTH: up to 2 pages.
 - Include all positions from the original resume.
 - Up to 4-5 bullets per position; quantify results wherever the original resume supports it.

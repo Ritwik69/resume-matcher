@@ -25,7 +25,8 @@
       "Bash(git add src/types/index.ts src/app/api/analyze/route.ts src/app/dashboard/page.tsx && git commit -m \"fix database types\")",
       "Bash(git add src/types/index.ts src/app/api/analyze/route.ts src/components/AnalyzeForm.tsx && git commit -m \"add download resume button with base64 PDF in API response\")",
       "Bash(ls /Users/ritwikranjan/resume-matcher/.env* 2>/dev/null || echo \"none found\")",
-      "Bash(git add src/app/api/analyze/route.ts src/components/AnalyzeForm.tsx src/types/index.ts src/lib/resend.ts && git commit -m \"add PDF download button\")"
+      "Bash(git add src/app/api/analyze/route.ts src/components/AnalyzeForm.tsx src/types/index.ts src/lib/resend.ts && git commit -m \"add PDF download button\")",
+      "Bash(git add src/app/api/analyze/route.ts && git commit -m \"fix 1-page compress not cut\" && git push)"
     ]
   }
 }
