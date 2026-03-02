@@ -86,11 +86,13 @@ Rules:
 /** Call Claude to rewrite and tailor the resume content for the given JD. */
 async function runRewrite(resumeText: string, jdText: string, pages: 1 | 2): Promise<string> {
   const lengthGuidance = pages === 1
-    ? `TARGET LENGTH: exactly 1 page.
-- Include only the 2-3 most recent / relevant positions; omit older or less-relevant roles.
-- Limit each position to 2-3 bullets max; keep every bullet under 15 words.
-- Summary: 2 sentences only.
-- Skills: one combined line per category; omit rarely-relevant tools.`
+    ? `TARGET LENGTH: exactly 1 page — achieved by COMPRESSION ONLY, never by removal.
+- Include EVERY position, project, skill, and achievement from the original resume — do not drop any role or item.
+- Compress each bullet aggressively: cut filler words, use telegraphic phrasing, keep every bullet under 12 words.
+- Limit each position to 2 bullets max, but rewrite them to pack ALL accomplishments from that role into those 2 bullets.
+- Summary: 2 tight sentences; no filler phrases.
+- Skills: consolidate into fewer category lines but list every skill from the original — abbreviate where safe (e.g. "JS" for "JavaScript").
+- If content still feels long, shorten words and remove articles/prepositions before ever considering removing an item.`
     : `TARGET LENGTH: up to 2 pages.
 - Include all positions from the original resume.
 - Up to 4-5 bullets per position; quantify results wherever the original resume supports it.
