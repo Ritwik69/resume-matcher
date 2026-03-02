@@ -83,6 +83,17 @@ export default function AnalyzeForm() {
     }
   };
 
+  const downloadPdf = (base64: string) => {
+    const bytes = Uint8Array.from(atob(base64), (c) => c.charCodeAt(0));
+    const blob = new Blob([bytes], { type: "application/pdf" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "tailored-resume.pdf";
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   const formatBytes = (bytes: number) => {
     if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
     return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
@@ -306,6 +317,27 @@ export default function AnalyzeForm() {
                 Your tailored resume PDF has been emailed to you — check your inbox.
               </p>
             </div>
+          )}
+
+          {/* Download button */}
+          {result.resumePdfBase64 && (
+            <button
+              onClick={() => downloadPdf(result.resumePdfBase64!)}
+              className={[
+                "w-full py-3.5 rounded-2xl font-semibold text-sm",
+                "flex items-center justify-center gap-2.5",
+                "bg-gradient-to-r from-violet-600 to-indigo-600",
+                "hover:from-violet-500 hover:to-indigo-500",
+                "text-white shadow-lg shadow-violet-900/30",
+                "transition-all duration-200 hover:shadow-violet-500/25 hover:scale-[1.01] active:scale-[0.99]",
+              ].join(" ")}
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                  d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              Download Tailored Resume
+            </button>
           )}
 
           {/* Score + Summary */}

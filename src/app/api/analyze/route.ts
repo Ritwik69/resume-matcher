@@ -253,15 +253,24 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // ── 6. Build PDF + 7. Send email (both non-fatal) ─────────────────────────
-  let emailSent = false;
+  // ── 6. Build PDF ────────────────────────────────────────────────────────────
+  // Always attempt — bytes are returned to the client for direct download.
+  let pdfBytes: Uint8Array | null = null;
   try {
-    const pdfBytes = await buildResumePdf(tailoredResumeText);
-    await sendResumeEmail(user.email!, pdfBytes, claudeResult.score, claudeResult.summary);
-    emailSent = true;
+    pdfBytes = await buildResumePdf(tailoredResumeText);
   } catch (err) {
-    // Non-fatal: log the error but don't fail the request
-    console.error("[analyze] PDF/email step failed:", err);
+    console.error("[analyze] PDF build failed:", err);
+  }
+
+  // ── 7. Send email (non-fatal) ───────────────────────────────────────────────
+  let emailSent = false;
+  if (pdfBytes) {
+    try {
+      await sendResumeEmail(user.email!, pdfBytes, claudeResult.score, claudeResult.summary);
+      emailSent = true;
+    } catch (err) {
+      console.error("[analyze] Email step failed:", err);
+    }
   }
 
   // ── 8. Persist analysis ────────────────────────────────────────────────────
@@ -297,6 +306,7 @@ export async function POST(req: NextRequest) {
     missingSkills: claudeResult.missing_skills,
     summary: claudeResult.summary,
     emailSent,
+    resumePdfBase64: pdfBytes ? Buffer.from(pdfBytes).toString("base64") : undefined,
   };
 
   return NextResponse.json(result);

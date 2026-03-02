@@ -113,6 +113,8 @@ export interface AnalyzeResult {
   summary: string;
   /** True if the tailored resume PDF was successfully emailed to the user. */
   emailSent: boolean;
+  /** Base64-encoded tailored resume PDF for direct browser download. */
+  resumePdfBase64?: string;
 }
 
 /** Shape Claude is expected to return (parsed from JSON response) */
