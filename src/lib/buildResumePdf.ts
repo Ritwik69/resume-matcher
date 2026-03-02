@@ -17,12 +17,12 @@ const MARGIN_Y = 54;
 const CONTENT_W = PAGE_W - MARGIN_X * 2;
 
 // ── Font sizes ────────────────────────────────────────────────────────────────
-const SZ_NAME = 22;
-const SZ_SUBTITLE = 11;
-const SZ_CONTACT = 8.5;
-const SZ_SECTION_HDR = 9.5;
-const SZ_BODY = 9.5;
-const SZ_BULLET = 9;
+const SZ_NAME = 20;
+const SZ_SUBTITLE = 10;
+const SZ_CONTACT = 8;
+const SZ_SECTION_HDR = 9;
+const SZ_BODY = 8.5;
+const SZ_BULLET = 8.5;
 
 // ── Colors (all values 0–1) ───────────────────────────────────────────────────
 const C_BLACK = rgb(0.07, 0.07, 0.12);

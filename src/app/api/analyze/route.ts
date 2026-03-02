@@ -86,16 +86,19 @@ Rules:
 /** Call Claude to rewrite and tailor the resume content for the given JD. */
 async function runRewrite(resumeText: string, jdText: string, pages: 1 | 2): Promise<string> {
   const lengthGuidance = pages === 1
-  ? `TARGET LENGTH: exactly 1 page — achieved by COMPRESSION ONLY, never by removal.
+    ? `TARGET LENGTH: exactly 1 page — achieved by COMPRESSION and REPHRASING ONLY, never by removal.
 STRICT RULES:
-- Rephrase the resume based on the job description using relevant keywords and Include EVERY single bullet point, position, project, skill and achievement from the original resume. Do not drop a single item.
-- Keep the same number of bullets per role as the original resume.
-- Compress each bullet to fit: remove filler words, articles, prepositions. Use telegraphic style. Max 12 words per bullet.
-- Reorder bullets within each role so JD-relevant ones come first — but keep all of them.
-- Summary: 2 tight sentences covering all key strengths. No filler.
-- Skills: keep every skill. Abbreviate safely where possible. Consolidate into fewer lines but list all.
-- If still long: shorten job titles, compress dates (e.g. "2024-Present"), tighten section headers.
-- NEVER drop content. Compression only.`
+- Keep EVERY bullet point as a separate bullet — do not merge bullets together.
+- Keep ALL positions, projects, skills and achievements. Do not drop anything.
+- REPHRASE each bullet to mirror the exact language and keywords from the job description — if the JD says "DAU", "activation", "retention", "experimentation", use those exact words where truthful and relevant.
+- Reorder bullets within each role so the most JD-relevant ones appear first.
+- Compress each bullet individually: remove filler words, articles, prepositions. Max 10 words per bullet.
+- Make every bullet sound like a direct answer to what the JD is asking for — connect the candidate's experience to the role's needs.
+- Summary: 2 tight sentences that directly address the JD's core requirements using the JD's own terminology.
+- Skills: keep every skill, consolidate into fewer lines, abbreviate safely.
+- NEVER merge multiple bullets into one long run-on sentence.
+- NEVER drop any bullet or role.
+- NEVER invent experience — only rephrase and reframe what already exists.`
     : `TARGET LENGTH: up to 2 pages.
 - Include all positions from the original resume.
 - Up to 4-5 bullets per position; quantify results wherever the original resume supports it.
