@@ -16,7 +16,16 @@
       "Bash(git -C /Users/ritwikranjan/resume-matcher add .)",
       "Bash(git -C /Users/ritwikranjan/resume-matcher commit -m \"fix typescript error\")",
       "Bash(git -C /Users/ritwikranjan/resume-matcher push)",
-      "Bash(git add . && git commit -m \"fix supabase type errors\" && git push)"
+      "Bash(git add . && git commit -m \"fix supabase type errors\" && git push)",
+      "Bash(which vercel && vercel --version 2>/dev/null)",
+      "Bash(vercel --prod 2>&1)",
+      "Bash(find /Users/ritwikranjan/resume-matcher/node_modules/@supabase -name \"*.d.ts\" 2>/dev/null | head -20)",
+      "Bash(git add src/app/api/analyze/route.ts && git commit -m \"fix ts errors\")",
+      "Bash(git push)",
+      "Bash(git add src/types/index.ts src/app/api/analyze/route.ts src/app/dashboard/page.tsx && git commit -m \"fix database types\")",
+      "Bash(git add src/types/index.ts src/app/api/analyze/route.ts src/components/AnalyzeForm.tsx && git commit -m \"add download resume button with base64 PDF in API response\")",
+      "Bash(ls /Users/ritwikranjan/resume-matcher/.env* 2>/dev/null || echo \"none found\")",
+      "Bash(git add src/app/api/analyze/route.ts src/components/AnalyzeForm.tsx src/types/index.ts src/lib/resend.ts && git commit -m \"add PDF download button\")"
     ]
   }
 }

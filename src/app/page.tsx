@@ -1,13 +1,19 @@
+import Link from "next/link";
 import AnalyzeForm from "@/components/AnalyzeForm";
+import SignOutButton from "@/components/SignOutButton";
+import { createServerClient } from "@/lib/supabase/server";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const supabase = await createServerClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
   return (
     <div className="min-h-screen bg-[#07070f] text-white antialiased">
       {/* ── Nav ── */}
       <nav className="sticky top-0 z-20 border-b border-white/5 bg-[#07070f]/80 backdrop-blur-xl">
-        <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
+        <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between gap-4">
           {/* Logo */}
-          <div className="flex items-center gap-2.5">
+          <Link href="/" className="flex items-center gap-2.5 shrink-0">
             <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center shadow-md shadow-violet-900/50">
               <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5}
@@ -15,19 +21,34 @@ export default function HomePage() {
               </svg>
             </div>
             <span className="font-semibold text-sm text-gray-100 tracking-tight">ResumeMatcher</span>
-          </div>
+          </Link>
 
-          {/* Auth links */}
-          <div className="flex items-center gap-2">
-            <a href="/login"
-              className="text-xs font-medium text-gray-500 hover:text-gray-300 transition-colors px-3 py-1.5">
-              Sign in
-            </a>
-            <a href="/signup"
-              className="text-xs font-medium px-3.5 py-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-200 transition-colors border border-white/8">
-              Get started
-            </a>
-          </div>
+          {/* Auth area */}
+          {user ? (
+            <div className="flex items-center gap-1 sm:gap-3">
+              <span className="hidden sm:block text-xs text-gray-600 truncate max-w-[180px]">
+                {user.email}
+              </span>
+              <Link
+                href="/dashboard"
+                className="text-xs font-medium text-gray-400 hover:text-gray-200 transition-colors px-3 py-1.5"
+              >
+                Dashboard
+              </Link>
+              <SignOutButton />
+            </div>
+          ) : (
+            <div className="flex items-center gap-2">
+              <a href="/login"
+                className="text-xs font-medium text-gray-500 hover:text-gray-300 transition-colors px-3 py-1.5">
+                Sign in
+              </a>
+              <a href="/signup"
+                className="text-xs font-medium px-3.5 py-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-200 transition-colors border border-white/8">
+                Get started
+              </a>
+            </div>
+          )}
         </div>
       </nav>
 
